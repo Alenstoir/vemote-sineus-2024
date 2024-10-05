@@ -13,7 +13,6 @@ public class MilkDrop : MonoBehaviour
     }
 
     void Start() {
-
         miniGameDirector = GameObject.FindGameObjectWithTag("MinigameEventSystem");
         milkScore = miniGameDirector.GetComponent<Score>();
     }

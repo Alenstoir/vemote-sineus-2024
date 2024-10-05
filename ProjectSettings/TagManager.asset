@@ -9,6 +9,7 @@ TagManager:
   - MinigameEventSystem
   - MilkDrop
   - GlobalEventSystem
+  - Plot
   layers:
   - Default
   - TransparentFX

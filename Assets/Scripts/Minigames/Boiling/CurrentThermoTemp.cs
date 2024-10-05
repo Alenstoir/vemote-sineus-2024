@@ -12,15 +12,15 @@ public class CurrentThermoTemp : MonoBehaviour
     private float coordToTemp;
 
     private Rigidbody rb;
-    private Vector3 startPos;
+    private Vector3 startScale;
 
     // Start is called before the first frame update
     void Start()
     {
         coordToTemp = boilTemp / (100 - baselineTemp);
         rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-        startPos = transform.position;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+        startScale = transform.localScale;
         currentTemp = 0;
     }
 
@@ -33,8 +33,9 @@ public class CurrentThermoTemp : MonoBehaviour
         else if (currentTemp < 0) {
             currentTemp = 0;
         }
-        Vector3 targetPos = startPos + new Vector3(0, currentTemp*coordToTemp, 0);
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime);
+        transform.localScale = startScale + new Vector3(0, currentTemp*coordToTemp, 0);
+        // Vector3 targetPos = startScale + new Vector3(0, currentTemp*coordToTemp, 0);
+        // transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime);
 
         if (currentTemp > 0) {
             currentTemp -= tempDropSpeed * Time.deltaTime;

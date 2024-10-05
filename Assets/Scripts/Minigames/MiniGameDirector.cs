@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MiniGameDirector : MonoBehaviour
+public class MiniGameDirector : AbstractGameDirector
 {
     private MilkingMiniGameDirector milkingMiniGameDirector;
     private BoilingMinigameDirector boilingMinigameDirector;
@@ -17,25 +17,23 @@ public class MiniGameDirector : MonoBehaviour
     void Start()
     {
         Initialize();
-        NextLevel();
+        // NextLevel();
     }
 
     public void Initialize() {
-        miniGameState = GetComponent<MiniGameState>();
         milkingMiniGameDirector = GetComponent<MilkingMiniGameDirector>();
         boilingMinigameDirector = GetComponent<BoilingMinigameDirector>();
         spinningMinigameDirector = GetComponent<SpinningMinigameDirector>();
         gameDirector = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<GameDirector>();
+        miniGameState = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MiniGameState>();
     }
 
     
     public void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            miniGameState.ToggleMenu();
-        }
+
     }
 
-    public void Restart() {
+    public override void Restart() {
         if (gameState == 1) {
             milkingMiniGameDirector.Restart();
         }
@@ -47,8 +45,7 @@ public class MiniGameDirector : MonoBehaviour
         }
     }
 
-
-    public void NextLevel() {
+    public override void NextLevel() {
         if (gameState == 0) {
             gameState = 1;
         }
@@ -68,9 +65,21 @@ public class MiniGameDirector : MonoBehaviour
         Restart();
     }
 
-    public void MainMenu() {
+    public override void Cleanup() {
+        Initialize();
+        milkingMiniGameDirector.Cleanup();
+        boilingMinigameDirector.Cleanup();
+        spinningMinigameDirector.Cleanup();
+    }
+
+    public override void MainMenu() {
         miniGameState.MainMenu();
         gameDirector.MoveToCity();
         // SceneManager.LoadScene(0);
+    }
+
+    public override string ReturnButtonName()
+    {
+        return "На карту";
     }
 }
