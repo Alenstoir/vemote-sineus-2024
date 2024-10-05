@@ -8,7 +8,8 @@ public class BucketController : MonoBehaviour
     public float leftBorder = 0;
     public float rightBorder = 0; 
 
-
+    public GameObject goose;
+    private Animator gooseAnim;
     private Vector3 movement;
     private Rigidbody rb;
 
@@ -18,6 +19,7 @@ public class BucketController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        gooseAnim = goose.GetComponentInChildren<Animator>();
         movement = new(0, 0, 0);
         rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
         startPos = transform.position;
@@ -37,5 +39,14 @@ public class BucketController : MonoBehaviour
 
     public void Restart() {
         transform.position = startPos;
+        SetupAnim();
+    }
+
+    public void SetupAnim() {
+        gooseAnim.ResetTrigger("Idle");
+        gooseAnim.ResetTrigger("Walk");
+        gooseAnim.SetBool("LegMove", false);
+        gooseAnim.SetBool("HandRotate", false);
+        gooseAnim.SetBool("BackSitting", true);
     }
 }

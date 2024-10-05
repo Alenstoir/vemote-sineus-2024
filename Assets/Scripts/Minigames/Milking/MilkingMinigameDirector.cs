@@ -21,6 +21,12 @@ public class MilkingMiniGameDirector : MonoBehaviour
     private MiniGameDirector miniGameDirector;
 
 
+    void Start() {
+        Initialize();
+        // Restart();
+    }
+
+
     public void Initialize() {
         milkEmitters = GameObject.FindGameObjectsWithTag("MilkEmitter");
         miniGameDirector = GetComponent<MiniGameDirector>();

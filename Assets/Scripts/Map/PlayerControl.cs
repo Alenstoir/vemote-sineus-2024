@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     public GameObject player;
+
+    private Animator gooseAnim;
     public float forwardSpeed = 5;
     public float sideSpeed = 5;
     public float backwardFactor = 1;
@@ -16,9 +18,11 @@ public class PlayerControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gooseAnim = this.transform.GetComponentInChildren<Animator>();
         rb = player.GetComponent<Rigidbody>();
         movement = new Vector3(0,0,0);
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        gooseAnim.SetBool("BackSitting", false);
     }
 
     // Update is called once per frame
@@ -38,6 +42,15 @@ public class PlayerControl : MonoBehaviour
         float turn = horizontalSpeed * turnSpeed * Time.fixedDeltaTime;
         Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
         rb.MoveRotation(rb.rotation * turnRotation);
+
+        if (verticalSpeed == 0f & horizontalSpeed == 0f) {
+            gooseAnim.ResetTrigger("Walk");
+            gooseAnim.SetTrigger("Idle");
+        }
+        else {
+            gooseAnim.ResetTrigger("Idle");
+            gooseAnim.SetTrigger("Walk");
+        }
     }
 
     public void MoveBackwards(float distance) {

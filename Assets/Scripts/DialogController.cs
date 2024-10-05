@@ -60,11 +60,10 @@ public class DialogController : MonoBehaviour
                 dialogName.transform.parent.gameObject.SetActive((dialogue.charName is null));
                 dialogName.SetText(dialogue.charName);
 
-                dialogName.transform.parent.gameObject.SetActive((dialogue.charName is null));
+                dialogText.transform.parent.gameObject.SetActive((dialogue.charName is null));
                 dialogText.SetText(dialogue.charText);
 
-                
-                dialogName.transform.parent.gameObject.SetActive((dialogue.charName is null));
+                dialogImage.transform.parent.gameObject.SetActive((dialogue.charName is null));
                 dialogImage.GetComponent<Image>().material.mainTexture = dialogue.charImage;
             }
         }

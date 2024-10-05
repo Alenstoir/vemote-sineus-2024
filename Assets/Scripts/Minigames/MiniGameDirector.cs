@@ -11,7 +11,7 @@ public class MiniGameDirector : AbstractGameDirector
     private MiniGameState miniGameState;
     private GameDirector gameDirector;
 
-    private int gameState = 0;
+    private int gameState = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +56,6 @@ public class MiniGameDirector : AbstractGameDirector
         else if (gameState == 2) {
             boilingMinigameDirector.Cleanup();
             gameState = 3;
-
         }
         else if (gameState == 3) {
             spinningMinigameDirector.Cleanup();
