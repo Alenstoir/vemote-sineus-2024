@@ -73,3 +73,6 @@ crashlytics-build.properties
 
 
 .vscode
+/Library
+Library/ArtifactDB
+UserSettings/Layouts/default-2022.dwlt
