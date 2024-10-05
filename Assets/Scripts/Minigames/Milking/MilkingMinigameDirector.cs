@@ -25,7 +25,8 @@ public class MilkingMiniGameDirector : MonoBehaviour
         milkEmitters = GameObject.FindGameObjectsWithTag("MilkEmitter");
         miniGameDirector = GetComponent<MiniGameDirector>();
         milkScore = GetComponent<Score>();
-        gameState = GetComponent<MiniGameState>();
+        gameState = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MiniGameState>();
+
         timer = GetComponent<Timer>();
         bucketController = bucket.GetComponent<BucketController>();
     }
@@ -76,6 +77,9 @@ public class MilkingMiniGameDirector : MonoBehaviour
     }
 
     public void Cleanup() {
+        foreach (GameObject milkDrop in GameObject.FindGameObjectsWithTag("MilkDrop")) {
+            Destroy(milkDrop);
+        }
         minigame.SetActive(false);
         state = false;
     }

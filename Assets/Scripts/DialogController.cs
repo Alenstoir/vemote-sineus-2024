@@ -12,7 +12,7 @@ public class DialogController : MonoBehaviour
     public TextMeshProUGUI dialogName;
     public GameObject dialogImage;
 
-    public Texture2D defaultImage;
+    public Texture2D[] charImages;
 
     private int dialogState;
     private Dictionary<string, DialogueGroup> dialogs = new Dictionary<string, DialogueGroup>();
@@ -22,8 +22,20 @@ public class DialogController : MonoBehaviour
     void Awake()
     {
         Dictionary<int, Dialogue> testCharGroup = new Dictionary<int, Dialogue>();
-        testCharGroup.Add(0, new Dialogue("PatheticTestChar", "Hello there", "TestChar.jpg"));
+        testCharGroup.Add(0, new Dialogue("PatheticTestChar", "Hello there", charImages[0]));
         dialogs.Add("TestChar", new DialogueGroup(testCharGroup));
+        Dictionary<int, Dialogue> gooseGuideGroup = new Dictionary<int, Dialogue>();
+        gooseGuideGroup.Add(0, new Dialogue(
+            "Гусь-Мастер", 
+            "Приветствую тебя! Чтобы собрать молоко, перемещай ведро с помощью клавиш A и D или стрелочек.", 
+            charImages[0]
+        ));
+        gooseGuideGroup.Add(1, new Dialogue(
+            "Гусь-Мастер", 
+            "Теперь чтобы вскипетить молоко, нажимай на левую кнопку мыши для увеличения температуры и старайся держать температуру в нужном диапазоне.", 
+            charImages[0]
+        ));
+        dialogs.Add("GooseGuide", new DialogueGroup(gooseGuideGroup));
     }
 
     void Update() {
@@ -44,9 +56,16 @@ public class DialogController : MonoBehaviour
                 dialogState = 1;
                 Time.timeScale = 0;
                 dialogCanvas.SetActive(true);
+
+                dialogName.transform.parent.gameObject.SetActive((dialogue.charName is null));
                 dialogName.SetText(dialogue.charName);
+
+                dialogName.transform.parent.gameObject.SetActive((dialogue.charName is null));
                 dialogText.SetText(dialogue.charText);
-                dialogImage.GetComponent<Image>().material.mainTexture = defaultImage;
+
+                
+                dialogName.transform.parent.gameObject.SetActive((dialogue.charName is null));
+                dialogImage.GetComponent<Image>().material.mainTexture = dialogue.charImage;
             }
         }
     }

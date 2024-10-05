@@ -17,18 +17,26 @@ public class BoilingMinigameDirector : MonoBehaviour
     private Score score;
     private MiniGameState gameState;
     private CurrentThermoTemp currentThermoTemp;
+    private DialogController dialogController;
     private bool state = false;
+
+
+    void Start() {
+        Initialize();
+        state = true;
+        // dialogController.InvokeDialog("GooseGuide", 1);
+    }
 
     
     public void Initialize() 
     {
         miniGameDirector = GetComponent<MiniGameDirector>();
         score = GetComponent<Score>();
-        gameState = GetComponent<MiniGameState>();
         currentThermoTemp = thermo.GetComponent<CurrentThermoTemp>();
+        gameState = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MiniGameState>();
+        dialogController = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<DialogController>();
     }
 
-    // Update is called once per frame
     void Update() {
         if (state) {
             if (Input.GetMouseButtonDown(0)) {
@@ -47,9 +55,6 @@ public class BoilingMinigameDirector : MonoBehaviour
             else {
                 if (tempUpperLimit >= currentThermoTemp.GetCurrentTemp() & currentThermoTemp.GetCurrentTemp() >= tempLowerLimit) {
                     score.GainScore(Time.fixedDeltaTime);
-                }
-                else {
-                    score.Restart();
                 }
             }
         }

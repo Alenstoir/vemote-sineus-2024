@@ -26,8 +26,8 @@ public class SpinningMinigameDirector : MonoBehaviour
     {
         miniGameDirector = GetComponent<MiniGameDirector>();
         score = GetComponent<Score>();
-        gameState = GetComponent<MiniGameState>();
         chumHandle = churnHandleObject.GetComponent<ChurnHandle>();
+        gameState = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MiniGameState>();
     }
 
     void FixedUpdate()

@@ -7,12 +7,12 @@ public class Dialogue
 
     public string charName;
     public string charText;
-    public string charImageName;
+    public Texture2D charImage;
 
-    public Dialogue(string charName, string charText, string charImageName) {
+    public Dialogue(string charName, string charText, Texture2D charImage) {
         this.charName = charName;
         this.charText = charText;
-        this.charImageName = charImageName;
+        this.charImage = charImage;
     }
 
 }
