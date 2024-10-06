@@ -48,5 +48,6 @@ public class BucketController : MonoBehaviour
         gooseAnim.SetBool("LegMove", false);
         gooseAnim.SetBool("HandRotate", false);
         gooseAnim.SetBool("BackSitting", true);
+        gooseAnim.SetBool("Kosit", false);
     }
 }

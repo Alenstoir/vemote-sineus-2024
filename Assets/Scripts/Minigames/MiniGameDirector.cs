@@ -11,7 +11,7 @@ public class MiniGameDirector : AbstractGameDirector
     private MiniGameState miniGameState;
     private GameDirector gameDirector;
 
-    private int gameState = 2;
+    private int gameState = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +44,27 @@ public class MiniGameDirector : AbstractGameDirector
             spinningMinigameDirector.Restart();
         }
     }
+
+    // public void SetLevel(int gameLevel) {
+    //     gameState = gameLevel;
+    //     Restart();
+    //     if (gameState == 0) {
+    //         gameState = 1;
+    //     }
+    //     else if (gameState == 1) {
+    //         milkingMiniGameDirector.Cleanup();
+    //         gameState = 2;
+    //     }
+    //     else if (gameState == 2) {
+    //         boilingMinigameDirector.Cleanup();
+    //         gameState = 3;
+    //     }
+    //     else if (gameState == 3) {
+    //         spinningMinigameDirector.Cleanup();
+    //         gameState = 4;
+    //     }
+    //     Restart();
+    // }
 
     public override void NextLevel() {
         if (gameState == 0) {

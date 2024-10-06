@@ -18,6 +18,9 @@ public class SpinningMinigameDirector : MonoBehaviour
     private Score score;
     private MiniGameState gameState;
     private MiniGameDirector miniGameDirector;
+    private MusicDirector musicDirector;
+    private DialogController dialogController;
+    private bool tutorialPassed = false;
     private bool state = false;
 
     void Start() {
@@ -32,6 +35,8 @@ public class SpinningMinigameDirector : MonoBehaviour
         score = GetComponent<Score>();
         chumHandle = churnHandleObject.GetComponent<ChurnHandle>();
         gameState = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MiniGameState>();
+        musicDirector = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MusicDirector>();
+        dialogController = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<DialogController>();
     }
 
     void FixedUpdate()
@@ -49,9 +54,23 @@ public class SpinningMinigameDirector : MonoBehaviour
                     score.GainScore(chumHandlePerfectSpeed);
                 }
             }
+            if (score.CurrentScore() >= churnPointsTarget) {
+                Victory();
+            }
         }
 
     }
+
+    public void Defeat() {
+        Debug.Log("Defeat");
+        gameState.Defeat(miniGameDirector.ReturnButtonName());
+    }
+
+    public void Victory() {
+        Debug.Log("Victory");
+        gameState.Victory(false, miniGameDirector.ReturnButtonName());
+    }
+
     public float GetCurrentSpeed() {
         try
         {
@@ -69,14 +88,20 @@ public class SpinningMinigameDirector : MonoBehaviour
         gooseAnim.SetBool("BackSitting", false);
         gooseAnim.SetBool("LegMove", false);
         gooseAnim.SetBool("HandRotate", true);
+        gooseAnim.SetBool("Kosit", false);
     }
 
     public void Restart() {
+        musicDirector.StartSpinningBGM();
         minigame.SetActive(true);
         Initialize();
         gameState.Restart();
         state = true;
         SetupAnim();
+        
+        if (!tutorialPassed) {
+            dialogController.InvokeDialog("GooseTutor", 2);
+        }
     }
 
     public void Cleanup() {

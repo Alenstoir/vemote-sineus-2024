@@ -57,8 +57,7 @@ public class ChurnHandle : MonoBehaviour
                 }
                 speed = Mathf.Abs(lastAngle - Mathf.Abs(angle)) * speedFactor * Time.fixedDeltaTime;
                 lastAngle = Mathf.Abs(angle);
-
-                chumHandle.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle * Mathf.Rad2Deg));
+                chumHandle.transform.eulerAngles = new Vector3(0f, 0f, angle * Mathf.Rad2Deg);
             }
             else {
                 speed = 0f;

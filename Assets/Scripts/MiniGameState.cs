@@ -6,6 +6,7 @@ using UnityEngine;
 public class MiniGameState : MonoBehaviour
 {
     public GameObject bgPlane;
+    public GameObject optionsPlane;
     public GameObject pausePlane;
     public GameObject errorPlane;
     public GameObject menuPlane;
@@ -23,20 +24,39 @@ public class MiniGameState : MonoBehaviour
         lastTimeScale = Time.timeScale;
     }
 
-    public void Defeat(){
+    public void Defeat(string returnButtonName = "В главное меню"){
         lastState = currentState;
         currentState = "Defeat";
         lastTimeScale = Time.timeScale;
         Time.timeScale = 0;
+
+        for (int i = 0; i < loosePlane.transform.GetChild(1).childCount; i += 1) {
+            GameObject child = loosePlane.transform.GetChild(1).GetChild(i).gameObject;
+            if (child.name == "MainMenuButton") {
+                child.GetComponentInChildren<TextMeshProUGUI>().SetText(returnButtonName);
+            }
+        }
         loosePlane.SetActive(true);
         bgPlane.SetActive(true);
     }
 
-    public void Victory(bool hasNextLevel=true) {
+    public void Victory(bool hasNextLevel=true, string returnButtonName = "В главное меню") {
         lastState = currentState;
         currentState = "Victory";
         lastTimeScale = Time.timeScale;
         Time.timeScale = 0;
+        for (int i = 0; i < winPlane.transform.GetChild(1).childCount; i += 1) {
+            GameObject child = winPlane.transform.GetChild(1).GetChild(i).gameObject;
+            if (child.name == "NextLevel") {
+                child.SetActive(hasNextLevel);
+            }
+        }
+        for (int i = 0; i < winPlane.transform.GetChild(1).childCount; i += 1) {
+            GameObject child = winPlane.transform.GetChild(1).GetChild(i).gameObject;
+            if (child.name == "MainMenuButton") {
+                child.GetComponentInChildren<TextMeshProUGUI>().SetText(returnButtonName);
+            }
+        }
         winPlane.SetActive(true);
         bgPlane.SetActive(true);
     }
@@ -88,7 +108,7 @@ public class MiniGameState : MonoBehaviour
         bgPlane.SetActive(true);
     }
 
-    public void ToggleMenu(string returnButtonName = "В главное меню") {
+    public void ToggleMenu(string returnButtonName = "В главное меню", bool hideRestart = false) {
         if (currentState == "Menu") {
             if (lastState == "Paused") {
                 pausePlane.SetActive(true);
@@ -101,10 +121,16 @@ public class MiniGameState : MonoBehaviour
         }
         else {
             if (new List<string> {"Playing", "Paused"}.Contains(currentState)) {
-                for (int i = 0; i < menuPlane.transform.GetChild(0).childCount; i += 1) {
-                    GameObject child = menuPlane.transform.GetChild(0).GetChild(i).gameObject;
+                for (int i = 0; i < menuPlane.transform.GetChild(1).childCount; i += 1) {
+                    GameObject child = menuPlane.transform.GetChild(1).GetChild(i).gameObject;
                     if (child.name == "MainMenuButton") {
                         child.GetComponentInChildren<TextMeshProUGUI>().SetText(returnButtonName);
+                    }
+                }
+                for (int i = 0; i < menuPlane.transform.GetChild(0).childCount; i += 1) {
+                    GameObject child = menuPlane.transform.GetChild(1).GetChild(i).gameObject;
+                    if (child.name == "RestartButton") {
+                        child.SetActive(hideRestart);
                     }
                 }
                 lastState = currentState;
@@ -127,6 +153,22 @@ public class MiniGameState : MonoBehaviour
         }
         else {
             Debug.Log($"Unable to toggle pause on state {currentState}");
+        }
+    }
+
+    public void ToggleOptions() {
+        if (currentState == "Menu" ) {
+            menuPlane.SetActive(false);
+            optionsPlane.SetActive(true);
+            currentState = "Options";
+        }
+        else if (currentState == "Options") {
+            menuPlane.SetActive(true);
+            optionsPlane.SetActive(false);
+            currentState = "Menu";
+        }
+        else {
+            Debug.Log($"Unable to toggle options on state {currentState}");
         }
     }
 }

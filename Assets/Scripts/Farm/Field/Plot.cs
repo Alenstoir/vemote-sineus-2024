@@ -24,6 +24,8 @@ public class Plot : MonoBehaviour
     public Material grainGathered;
     public float grainGatheredTimeout = 60f;
 
+    public GameObject cellHighlihgt;
+
     [SerializeField] private int state = 0;
     [SerializeField] private int currentPoints = 0;
     [SerializeField] private float stateTiemout = 0;
@@ -40,6 +42,17 @@ public class Plot : MonoBehaviour
         Restart();
     }
 
+    void OnMouseEnter() {
+        SetSelection(true);
+    }
+
+    void OnMouseExit() {
+        SetSelection(false);
+    }
+
+    void OnMouseDown() {
+        PlotInteract();
+    }
 
     void Initialize() {
         miniGameDirector = GameObject.FindGameObjectWithTag("MinigameEventSystem").GetComponent<FarmMinigameDirector>();
@@ -55,11 +68,6 @@ public class Plot : MonoBehaviour
         state = 0;
         currentPoints = startingPoints;
         grain.SetActive(false);
-    }
-
-    void OnMouseDown()
-    {
-        PlotInteract();
     }
 
     void FixedUpdate() {
@@ -137,5 +145,9 @@ public class Plot : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void SetSelection(bool selectionState) {
+        cellHighlihgt.SetActive(selectionState);
     }
 }

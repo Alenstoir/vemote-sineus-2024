@@ -19,6 +19,9 @@ public class MilkingMiniGameDirector : MonoBehaviour
     private bool state = false;
     private BucketController bucketController;
     private MiniGameDirector miniGameDirector;
+    private MusicDirector musicDirector;
+    private DialogController dialogController;
+    private bool tutorialPassed = false;
 
 
     void Start() {
@@ -32,6 +35,9 @@ public class MilkingMiniGameDirector : MonoBehaviour
         miniGameDirector = GetComponent<MiniGameDirector>();
         milkScore = GetComponent<Score>();
         gameState = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MiniGameState>();
+        musicDirector = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MusicDirector>();
+
+        dialogController = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<DialogController>();
 
         timer = GetComponent<Timer>();
         bucketController = bucket.GetComponent<BucketController>();
@@ -60,17 +66,18 @@ public class MilkingMiniGameDirector : MonoBehaviour
 
     public void Defeat() {
         Debug.Log("Defeat");
-        gameState.Defeat();
+        gameState.Defeat(miniGameDirector.ReturnButtonName());
     }
 
     public void Victory() {
         Debug.Log("Victory");
-        gameState.Victory(false);
+        gameState.Victory(true, miniGameDirector.ReturnButtonName());
     }
 
     public void Restart() {
-        minigame.SetActive(true);
         Initialize();
+        musicDirector.StartMilkingBGM();
+        minigame.SetActive(true);
         foreach (GameObject milkDrop in GameObject.FindGameObjectsWithTag("MilkDrop")) {
             Destroy(milkDrop);
         }
@@ -80,6 +87,9 @@ public class MilkingMiniGameDirector : MonoBehaviour
         timer.Restart();
         milkScore.Restart();
         state = true;
+        if (!tutorialPassed) {
+            dialogController.InvokeDialog("GooseTutor", 0);
+        }
     }
 
     public void Cleanup() {

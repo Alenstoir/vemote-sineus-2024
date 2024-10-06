@@ -20,8 +20,9 @@ public class BoilingMinigameDirector : MonoBehaviour
     private MiniGameState gameState;
     private CurrentThermoTemp currentThermoTemp;
     private DialogController dialogController;
+    private MusicDirector musicDirector;
+    private bool tutorialPassed = false;
     private bool state = false;
-
 
     void Start() {
         Initialize();
@@ -37,6 +38,7 @@ public class BoilingMinigameDirector : MonoBehaviour
         currentThermoTemp = thermo.GetComponent<CurrentThermoTemp>();
         gameState = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MiniGameState>();
         dialogController = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<DialogController>();
+        musicDirector = GameObject.FindGameObjectWithTag("GlobalEventSystem").GetComponent<MusicDirector>();
     }
 
     void Update() {
@@ -66,12 +68,16 @@ public class BoilingMinigameDirector : MonoBehaviour
     }
 
     public void Restart() {
+        musicDirector.StartBoilingBGM();
         minigame.SetActive(true);
         Initialize();
         gameState.Restart();
         score.Restart();
         state = true;
         SetupAnim();
+        if (!tutorialPassed) {
+            dialogController.InvokeDialog("GooseTutor", 1);
+        }
     }
     
     public void SetupAnim() {
@@ -80,6 +86,8 @@ public class BoilingMinigameDirector : MonoBehaviour
         gooseAnim.SetBool("BackSitting", false);
         gooseAnim.SetBool("LegMove", true);
         gooseAnim.SetBool("HandRotate", false);
+        gooseAnim.SetBool("Kosit", false);
+
     }
 
     public void Cleanup() {
@@ -89,6 +97,8 @@ public class BoilingMinigameDirector : MonoBehaviour
 
     public void Victory() {
         Debug.Log("Victory");
-        gameState.Victory(false);
+        gameState.Victory(true, miniGameDirector.ReturnButtonName());
+        tutorialPassed = true;
+
     }
 }
