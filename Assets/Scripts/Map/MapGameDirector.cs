@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MapGameDirector : AbstractGameDirector
 {
+    public GameObject zone1;
     public override void Cleanup()
     {
         throw new System.NotImplementedException();
@@ -38,7 +39,9 @@ public class MapGameDirector : AbstractGameDirector
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.F1)) {
+            zone1.GetComponent<UnlockZone>().StartUnlocking();
+        }
     }
     
 }

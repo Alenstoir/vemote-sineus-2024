@@ -10,6 +10,7 @@ TagManager:
   - MilkDrop
   - GlobalEventSystem
   - Plot
+  - Interactible
   layers:
   - Default
   - TransparentFX

@@ -101,6 +101,8 @@ public class SpinningMinigameDirector : MonoBehaviour
         
         if (!tutorialPassed) {
             dialogController.InvokeDialog("GooseTutor", 2);
+            tutorialPassed = true;
+
         }
     }
 

@@ -89,6 +89,7 @@ public class MilkingMiniGameDirector : MonoBehaviour
         state = true;
         if (!tutorialPassed) {
             dialogController.InvokeDialog("GooseTutor", 0);
+            tutorialPassed = true;
         }
     }
 
